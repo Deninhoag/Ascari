@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agenda Semanal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🗓️ Agenda Semanal</h1>
+
+    <!-- Formulário -->
+    <form class="formulario" id="form-agenda">
+      <select id="dia">
+        <option value="Segunda-feira">Segunda-feira</option>
+        <option value="Terça-feira">Terça-feira</option>
+        <option value="Quarta-feira">Quarta-feira</option>
+        <option value="Quinta-feira">Quinta-feira</option>
+        <option value="Sexta-feira">Sexta-feira</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+      </select>
+
+      <input type="time" id="horario" required />
+      <select id="tipo">
+        <option value="Estudo">Estudo</option>
+        <option value="Reunião">Reunião</option>
+        <option value="Outro">Outro</option>
+      </select>
+
+      <input type="text" id="mensagem" placeholder="Mensagem" required />
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <!-- Área da Agenda -->
+    <div class="agenda" id="agenda"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
