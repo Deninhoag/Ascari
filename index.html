@@ -7,10 +7,26 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>🗓️ Agenda Semanal</h1>
+  <body>
+  <div id="login-container" class="container">
+    <h1>🔐 Login da Agenda</h1>
+    <form id="form-login">
+  <input type="text" id="nome" placeholder="Seu nome" required />
+  <input type="email" id="email" placeholder="Seu e-mail" required />
+  <input type="password" id="senha" placeholder="Sua senha" required />
+  <button type="submit">Entrar</button>
+</form>
 
-    <!-- Formulário -->
+  </div>
+
+  <div id="agenda-container" class="container" style="display: none;">
+    <h1>🗓️ Agenda Semanal</h1>
+    <p id="usuario-logado" style="font-weight: 500;"></p>
+    <div id="footer-logout">
+  <button id="logout">Sair</button>
+</div>
+
+
     <form class="formulario" id="form-agenda">
       <select id="dia">
         <option value="Segunda-feira">Segunda-feira</option>
@@ -33,10 +49,10 @@
       <button type="submit">Adicionar</button>
     </form>
 
-    <!-- Área da Agenda -->
     <div class="agenda" id="agenda"></div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
