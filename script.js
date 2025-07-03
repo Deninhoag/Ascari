@@ -1,54 +1,68 @@
-const form = document.getElementById('form-agenda');
-const agendaContainer = document.getElementById('agenda');
+const loginForm = document.getElementById("form-login");
+const agendaForm = document.getElementById("form-agenda");
+const agendaContainer = document.getElementById("agenda");
+const agendaSection = document.getElementById("agenda-container");
+const loginSection = document.getElementById("login-container");
+const logoutBtn = document.getElementById("logout");
+const userDisplay = document.getElementById("usuario-logado");
 
-let dadosAgenda = JSON.parse(localStorage.getItem('agenda')) || {};
+let usuarioAtual = null;
+let dadosAgenda = {};
 
-// Renderiza a agenda
+function getAgendaStorageKey(email) {
+  return `agenda_${email}`;
+}
+
+function carregarAgenda(email) {
+  const data = localStorage.getItem(getAgendaStorageKey(email));
+  dadosAgenda = data ? JSON.parse(data) : {};
+}
+
+function salvarAgenda() {
+  if (usuarioAtual) {
+    localStorage.setItem(getAgendaStorageKey(usuarioAtual), JSON.stringify(dadosAgenda));
+  }
+}
+
 function renderAgenda() {
-  agendaContainer.innerHTML = '';
+  agendaContainer.innerHTML = "";
   const diasDaSemana = [
-    "Segunda-feira",
-    "Terça-feira",
-    "Quarta-feira",
-    "Quinta-feira",
-    "Sexta-feira",
-    "Sábado",
-    "Domingo"
+    "Segunda-feira", "Terça-feira", "Quarta-feira",
+    "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"
   ];
 
   diasDaSemana.forEach(dia => {
-    const diaDiv = document.createElement('div');
-    diaDiv.classList.add('dia');
+    const diaDiv = document.createElement("div");
+    diaDiv.classList.add("dia");
 
-    const titulo = document.createElement('h2');
+    const titulo = document.createElement("h2");
     titulo.textContent = dia;
     diaDiv.appendChild(titulo);
 
     const eventos = dadosAgenda[dia] || [];
 
     eventos.forEach((evento, index) => {
-      const eventoDiv = document.createElement('div');
-      eventoDiv.classList.add('evento');
-
+      const eventoDiv = document.createElement("div");
+      eventoDiv.classList.add("evento");
       eventoDiv.innerHTML = `
         <p><strong>${evento.horario} - ${evento.tipo}:</strong> ${evento.mensagem}</p>
         <button class="edit">Editar</button>
         <button class="delete">Excluir</button>
       `;
 
-      // Editar evento
-      eventoDiv.querySelector('.edit').addEventListener('click', () => {
+      eventoDiv.querySelector(".edit").addEventListener("click", () => {
         const novaMensagem = prompt("Editar mensagem:", evento.mensagem);
         if (novaMensagem !== null) {
           dadosAgenda[dia][index].mensagem = novaMensagem;
-          salvarEAtualizar();
+          salvarAgenda();
+          renderAgenda();
         }
       });
 
-      // Excluir evento
-      eventoDiv.querySelector('.delete').addEventListener('click', () => {
+      eventoDiv.querySelector(".delete").addEventListener("click", () => {
         dadosAgenda[dia].splice(index, 1);
-        salvarEAtualizar();
+        salvarAgenda();
+        renderAgenda();
       });
 
       diaDiv.appendChild(eventoDiv);
@@ -58,28 +72,58 @@ function renderAgenda() {
   });
 }
 
-// Salva e atualiza
-function salvarEAtualizar() {
-  localStorage.setItem('agenda', JSON.stringify(dadosAgenda));
-  renderAgenda();
-}
-
-// Adiciona novo evento
-form.addEventListener('submit', (e) => {
+agendaForm.addEventListener("submit", e => {
   e.preventDefault();
-  const dia = document.getElementById('dia').value;
-  const horario = document.getElementById('horario').value;
-  const tipo = document.getElementById('tipo').value;
-  const mensagem = document.getElementById('mensagem').value;
+  const dia = document.getElementById("dia").value;
+  const horario = document.getElementById("horario").value;
+  const tipo = document.getElementById("tipo").value;
+  const mensagem = document.getElementById("mensagem").value;
 
   if (!dadosAgenda[dia]) {
     dadosAgenda[dia] = [];
   }
 
   dadosAgenda[dia].push({ horario, tipo, mensagem });
-  form.reset();
-  salvarEAtualizar();
+  agendaForm.reset();
+  salvarAgenda();
+  renderAgenda();
 });
 
-// Inicia
-renderAgenda();
+loginForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const nome = document.getElementById("nome").value.trim();
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const senha = document.getElementById("senha").value;
+
+  if (email && senha && nome) {
+    usuarioAtual = email;
+
+    // Salvar nome no localStorage (caso seja novo usuário)
+    const chaveNome = `usuario_nome_${email}`;
+    localStorage.setItem(chaveNome, nome);
+
+    carregarAgenda(usuarioAtual);
+
+    loginSection.style.display = "none";
+    agendaSection.style.display = "block";
+
+    userDisplay.textContent = nome;
+
+    renderAgenda();
+  }
+});
+
+logoutBtn.addEventListener("click",() => {
+  usuarioAtual = null;
+  
+  //mostrar tela de login e esconde agenda
+  loginSection.style.display = "block";
+  agendaSection.style.display = "none";
+  userDisplay.textContent ="";
+
+  // Limpar os campos do formulário de login
+  document.getElementById("nome").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("senha").value = "";
+});
+
