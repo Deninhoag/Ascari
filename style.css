@@ -98,3 +98,60 @@ h1 {
   font-size: 11px;
 }
 
+#form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: auto;
+}
+
+#form-login input,
+#form-login button {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#form-login button {
+  background-color: #9045f3;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#form-login button:hover {
+  background-color: #4f03b3;
+}
+
+#logout {
+  float: right;
+  background-color: #d63031;
+  color: white;
+  border: none;
+  padding: 4px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#footer-logout {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#logout {
+  background-color: #d63031;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#logout:hover {
+  background-color: #c0392b;
+}
